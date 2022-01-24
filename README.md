@@ -19,6 +19,7 @@ class Object:
     def __init__(self):
         self.x = 0
         self.y = 0
+        self.move = 0
         
     def add_img(self, address):
         if address[-3:] == "png":
@@ -40,9 +41,9 @@ spaceship.add_img("C:/Users/Administrator/Pictures/Saved Pictures/spaceship.png"
 spaceship.transform_size(50,70)
 spaceship.x = round(size[0]/2 - spaceship.size_x/2)
 spaceship.y = size[1] - spaceship.size_y - 20
+spaceship.move = 5
 
         
-
 # space_ship = pygame.image.load("C:/Users/Administrator/Pictures/Saved Pictures/spaceship.png").convert_alpha()
 # space_ship = pygame.transform.scale(space_ship,(50,70))
 # space_ship_size_x, space_ship_size_y = space_ship.get_size()
@@ -59,13 +60,19 @@ g_status = 0
 while g_status == 0:
 
     # 4 - 1. FPS 설정 (frame per second)
-    clock.tick(2)
+    clock.tick(60)
     
     # 4 - 2. 입력 감지 (마우스, 키보드)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             g_status = 1
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                spaceship.x -= spaceship.move
+            elif event.key == pygame.K_RIGHT:
+                spaceship.x += spaceship.move
             
+#         print(event)
     # 4 - 3. 시간, 입력에 따른 변화를 반영 
     k += 1
     
