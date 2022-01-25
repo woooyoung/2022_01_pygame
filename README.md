@@ -47,6 +47,8 @@ left_move = False
 right_move = False
 space_move = False
         
+missile_list = []
+
 black = (0,0,0)
 white = (255,255,255)
 k = 0
@@ -70,6 +72,7 @@ while g_status == 0:
                 right_move = True
             elif event.key == pygame.K_SPACE:
                 space_move = True
+                k = 0
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 left_move = False
@@ -88,8 +91,8 @@ while g_status == 0:
         if spaceship.x >= size[0] - spaceship.size_x:
             spaceship.x = size[0] - spaceship.size_x
     
-    missile_list = []
-    if space_move == True:
+    
+    if space_move == True and k % 6 == 0:
         missile = Object()
         missile.add_img("C:/Users/Administrator/Pictures/Saved Pictures/missile.png")
         missile.transform_size(10,20)
@@ -97,19 +100,33 @@ while g_status == 0:
         missile.y = spaceship.y -  missile.size_y - 10
         missile.move = 15
         missile_list.append(missile)
+        
+    k += 1
+    
     
     delete_list = []
     for i in range(len(missile_list)):
-        missile = missile_list[i]
-        missile.y -= missile.move
-        if missile.y <= -missile.size_y:
+        m = missile_list[i]
+        m.y -= m.move
+        if m.y <= -m.size_y:
             delete_list.append(i)
-            del missile_list[i]
+            
+    delete_list.reverse()  
+    for d in delete_list:
+        del missile_list[d]
+        
+#     try:
+#     delete_list.reverse() 
+#     for d in delete_list:
+#         del missile_list[d]
+#     except:
+#         pass
         
     # 4 - 4. 전사 작업(그리기)
     screen.fill(black)
     spaceship.show_img()
-    
+    for missile in missile_list:
+        missile.show_img()
     # 4 - 5. 업데이트
     pygame.display.flip()
     
