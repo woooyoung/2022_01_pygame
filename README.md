@@ -37,6 +37,16 @@ class Object:
     def show_img(self):
         screen.blit(self.img,(self.x, self.y))
         
+def crash(a, b):
+    if (a.x-b.size_x <= b.x) and (b.x <= a.x+a.size_x):
+        if (a.y-b.size_y <= b.y) and (b.y <= a.y+a.size_y):
+            return True
+        else:
+            return False
+    else : 
+        return False
+
+        
 spaceship = Object()
 spaceship.add_img("C:/Users/Administrator/Pictures/Saved Pictures/spaceship.png")
 spaceship.transform_size(50,70)
@@ -142,6 +152,8 @@ while g_status == 0:
             
     for d in delete_list:
         del enemy_list[d]
+        
+    # --> 충돌!
         
     # 4 - 4. 전사 작업(그리기)
     screen.fill(black)
