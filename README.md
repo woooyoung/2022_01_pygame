@@ -1,6 +1,7 @@
 # 2022_01_pygame
 ```python
 import pygame
+import random
 
 # 1. 초기화
 pygame.init()
@@ -48,6 +49,7 @@ right_move = False
 space_move = False
         
 missile_list = []
+enemy_list = []
 
 black = (0,0,0)
 white = (255,255,255)
@@ -121,12 +123,33 @@ while g_status == 0:
 #         del missile_list[d]
 #     except:
 #         pass
+
+    if random.random() > 0.98:
+        enemy = Object()
+        enemy.add_img("C:/Users/Administrator/Pictures/Saved Pictures/enemy.png")
+        enemy.transform_size(30,30)
+        enemy.x = random.randrange(0,size[0] - enemy.size_x - round(spaceship.size_x/2))
+        enemy.y = 10
+        enemy.move = 2
+        enemy_list.append(enemy)
+    
+    delete_list = []
+    for i in range(len(enemy_list)):
+        e = enemy_list[i]
+        e.y += e.move
+        if e.y >= size[1]:
+            delete_list.append(i)
+            
+    for d in delete_list:
+        del enemy_list[d]
         
     # 4 - 4. 전사 작업(그리기)
     screen.fill(black)
     spaceship.show_img()
     for missile in missile_list:
         missile.show_img()
+    for enemy in enemy_list:
+        enemy.show_img()
     # 4 - 5. 업데이트
     pygame.display.flip()
     
