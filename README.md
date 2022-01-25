@@ -41,15 +41,11 @@ spaceship.add_img("C:/Users/Administrator/Pictures/Saved Pictures/spaceship.png"
 spaceship.transform_size(50,70)
 spaceship.x = round(size[0]/2 - spaceship.size_x/2)
 spaceship.y = size[1] - spaceship.size_y - 20
-spaceship.move = 5
+spaceship.move = 10
 
+left_move = False
+right_move = False
         
-# space_ship = pygame.image.load("C:/Users/Administrator/Pictures/Saved Pictures/spaceship.png").convert_alpha()
-# space_ship = pygame.transform.scale(space_ship,(50,70))
-# space_ship_size_x, space_ship_size_y = space_ship.get_size()
-# space_ship_x = round(size[0]/2 - space_ship_size_x/2)
-# space_ship_y = size[1] - space_ship_size_y - 20
-
 black = (0,0,0)
 white = (255,255,255)
 k = 0
@@ -68,13 +64,24 @@ while g_status == 0:
             g_status = 1
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                spaceship.x -= spaceship.move
+                left_move = True
             elif event.key == pygame.K_RIGHT:
-                spaceship.x += spaceship.move
-            
+                right_move = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                left_move = False
+            elif event.key == pygame.K_RIGHT:
+                right_move = False
 #         print(event)
     # 4 - 3. 시간, 입력에 따른 변화를 반영 
-    k += 1
+    if left_move == True:
+        spaceship.x -= spaceship.move
+        if spaceship.x <= 0:
+            spaceship.x = 0
+    elif right_move == True:
+        spaceship.x += spaceship.move
+        if spaceship.x >= size[0] - spaceship.size_x:
+            spaceship.x = size[0] - spaceship.size_x
     
     # 4 - 4. 전사 작업(그리기)
     screen.fill(black)
