@@ -45,6 +45,7 @@ spaceship.move = 10
 
 left_move = False
 right_move = False
+space_move = False
         
 black = (0,0,0)
 white = (255,255,255)
@@ -67,13 +68,17 @@ while g_status == 0:
                 left_move = True
             elif event.key == pygame.K_RIGHT:
                 right_move = True
+            elif event.key == pygame.K_SPACE:
+                space_move = True
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 left_move = False
             elif event.key == pygame.K_RIGHT:
                 right_move = False
+            elif event.key == pygame.K_SPACE:
+                space_move = False
 #         print(event)
-    # 4 - 3. 시간, 입력에 따른 변화를 반영 
+    # 4 - 3. 입력,시간에 따른 변화를 반영 
     if left_move == True:
         spaceship.x -= spaceship.move
         if spaceship.x <= 0:
@@ -83,9 +88,28 @@ while g_status == 0:
         if spaceship.x >= size[0] - spaceship.size_x:
             spaceship.x = size[0] - spaceship.size_x
     
+    missile_list = []
+    if space_move == True:
+        missile = Object()
+        missile.add_img("C:/Users/Administrator/Pictures/Saved Pictures/missile.png")
+        missile.transform_size(10,20)
+        missile.x = round(spaceship.x + spaceship.size_x/2 - missile.size_x/2)
+        missile.y = spaceship.y -  missile.size_y - 10
+        missile.move = 15
+        missile_list.append(missile)
+    
+    delete_list = []
+    for i in range(len(missile_list)):
+        missile = missile_list[i]
+        missile.y -= missile.move
+        if missile.y <= -missile.size_y:
+            delete_list.append(i)
+            del missile_list[i]
+        
     # 4 - 4. 전사 작업(그리기)
     screen.fill(black)
     spaceship.show_img()
+    
     # 4 - 5. 업데이트
     pygame.display.flip()
     
